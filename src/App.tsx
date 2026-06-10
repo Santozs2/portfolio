@@ -17,7 +17,7 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-neutral-200 select-none relative selection:bg-orange-500 selection:text-black">
+    <div className="min-h-screen bg-[#050505] text-neutral-200 relative selection:bg-orange-500 selection:text-black">
       {/* Loading Screen — unmounts after exit animation */}
       {!loaded && <LoadingScreen onDone={() => setLoaded(true)} />}
 

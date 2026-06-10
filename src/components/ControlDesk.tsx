@@ -48,7 +48,7 @@ export default function ControlDesk() {
     { id: 'ambiente-jornada', name: 'Jornada', num: '03' },
     { id: 'ambiente-laboratorio', name: 'Projetos', num: '04' },
     { id: 'ambiente-ferramentas', name: 'Ferramentas', num: '05' },
-    { id: 'ambiente-contato', name: 'Contato', num: '07' }
+    { id: 'ambiente-contato', name: 'Contato', num: '06' }
   ];
 
   const scrollTo = (id: string) => {
