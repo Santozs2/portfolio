@@ -9,12 +9,11 @@ import {
   useMotionValue 
 } from 'motion/react';
 import { Cpu, Sparkles } from 'lucide-react';
-import LogoCanvasEffect from './LogoCanvasEffect'; // Importe o novo componente
+import LogoCanvasEffect from './LogoCanvasEffect';
 
 export default function CentralEnviron() {
   const [currentTime, setCurrentTime] = useState('');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0, normalizedX: 0, normalizedY: 0 });
-  const [inspectionActive, setInspectionActive] = useState(false);
   const [isLogoHovering, setIsLogoHovering] = useState(false);
   const [logoMousePos, setLogoMousePos] = useState({ x: -1, y: -1 });
 
@@ -24,23 +23,20 @@ export default function CentralEnviron() {
   const containerRef = useRef<HTMLDivElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
 
-  // Lógica do Marquee Reativo ao Scroll
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
   const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
-
-  // Mapeia o valor de baseX para uma porcentagem de translação, resetando a cada 25% (pois temos 4 cópias)
   const x = useTransform(baseX, (v) => `${((v % 25) + 25) % 25 - 25}%`);
   const directionFactor = useRef<number>(1);
   
   useAnimationFrame((t, delta) => {
-    let moveBy = directionFactor.current * -2.5 * (delta / 1000); // Velocidade base
+    let moveBy = directionFactor.current * -2.5 * (delta / 1000); 
     if (velocityFactor.get() < 0) {
-      directionFactor.current = -1; // Inverte para a direita ao scrollar para cima
+      directionFactor.current = -1; 
     } else if (velocityFactor.get() > 0) {
-      directionFactor.current = 1; // Mantém esquerda ao scrollar para baixo
+      directionFactor.current = 1; 
     }
     moveBy += directionFactor.current * moveBy * velocityFactor.get();
     baseX.set(baseX.get() + moveBy);
@@ -106,9 +102,7 @@ export default function CentralEnviron() {
       id="ambiente-central"
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className={`relative min-h-screen flex flex-col justify-between p-4 sm:p-8 lg:p-12 overflow-hidden tech-grid-fine bg-[#020202] ${
-        inspectionActive ? 'blueprint-outline' : ''
-      }`}
+      className="relative min-h-screen flex flex-col justify-between p-4 sm:p-8 lg:p-12 overflow-hidden tech-grid-fine bg-[#020202]"
     >
       {/* Background Grids and Parallax Vectors */}
       <div
