@@ -11,8 +11,7 @@ import ProjetosEnviron from './components/ProjetosEnviron';
 import FerramentasEnviron from './components/FerramentasEnviron';
 import ProximaVersaoEnviron from './components/ProximaVersaoEnviron';
 import ContatoEnviron from './components/ContatoEnviron';
-import AmbientParticles from './components/AmbientParticles';
-import LoadingScreen from './components/LoadingScreen';
+import LoadingScreen from './components/Loadingscreen';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -24,9 +23,6 @@ export default function App() {
 
       {/* Immersive Scanline layer */}
       <div className="fixed inset-0 pointer-events-none scanline opacity-[0.12] z-50" />
-
-      <AmbientParticles count={60} />
-
       {/* Main Experience Environments Section Stream */}
       <main className="relative z-10 w-full overflow-hidden">
         <CentralEnviron />

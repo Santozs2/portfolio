@@ -14,7 +14,8 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsxdev",
+    "types": ["react", "react-dom"],
     "paths": {
       "@/*": [
         "./*"
