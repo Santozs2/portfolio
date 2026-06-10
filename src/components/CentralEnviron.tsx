@@ -266,7 +266,6 @@ export default function CentralEnviron() {
               <span className="text-orange-500">*</span>
               <span>ENGENHARIA DE SOFTWARE</span>
               <span className="text-yellow-500">*</span>
-              <span>100% HAND MADE</span>
             </div>
           ).map((item, idx) => (
             <React.Fragment key={idx}>{item}</React.Fragment>

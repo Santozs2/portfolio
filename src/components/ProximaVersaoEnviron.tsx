@@ -39,7 +39,7 @@ export default function ProximaVersaoEnviron() {
           </h2>
           
           <p className="text-base text-white/60 max-w-lg leading-relaxed font-light">
-            Meu nome é <span className='text-orange-500 font-bold'>Luis Antonio dos Santos Nogueira</span>, tenho 17 anos, curso Desenvolvimento de Sistemas no SENAI-SP, sou uma pessoa criativa, comunicativa e estudiosa, procuro sempre aprender coisas novas e me desenvolver como pessoa e como profissional.
+            Prazer, sou <span className='text-orange-500 font-bold'>Luis Antonio dos Santos Nogueira</span>, mas a maioria das pessoas me conhece como Nogueira. Tenho 17 anos e estudo Desenvolvimento de Sistemas no SENAI-SP. Desde que comecei a ter contato com tecnologia, descobri minha paixão por criar, aprender e resolver problemas. Estou sempre buscando novos conhecimentos e desafios que me permitam crescer como pessoa e como profissional.
           </p>
 
           <div className="border border-white/10 p-4 bg-black rounded max-w-sm flex items-center gap-4">

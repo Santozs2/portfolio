@@ -44,11 +44,11 @@ export default function ControlDesk() {
 
   const navItems: NavItem[] = [
     { id: 'ambiente-central', name: 'Central', num: '01' },
-    { id: 'ambiente-jornada', name: 'Jornada', num: '02' },
-    { id: 'ambiente-laboratorio', name: 'Projetos', num: '03' },
-    { id: 'ambiente-ferramentas', name: 'Ferramentas', num: '04' },
-    { id: 'ambiente-proxima-versao', name: 'Sobre Mim', num: '05' },
-    { id: 'ambiente-contato', name: 'Contato', num: '06' }
+    { id: 'ambiente-proxima-versao', name: 'Sobre Mim', num: '02' },
+    { id: 'ambiente-jornada', name: 'Jornada', num: '03' },
+    { id: 'ambiente-laboratorio', name: 'Projetos', num: '04' },
+    { id: 'ambiente-ferramentas', name: 'Ferramentas', num: '05' },
+    { id: 'ambiente-contato', name: 'Contato', num: '07' }
   ];
 
   const scrollTo = (id: string) => {
