@@ -100,6 +100,7 @@ export default function ControlDesk() {
         <button
           onClick={triggerDiagnosticCycle}
           title="Verificar Integridade do Sistema"
+          aria-label="Verificar integridade do sistema"
           className="p-2 border border-white/10 rounded-full hover:border-orange-500/50 hover:bg-orange-500/10 text-orange-400 cursor-pointer transition-colors"
         >
           <Cpu size={14} className="animate-pulse" />
@@ -115,6 +116,7 @@ export default function ControlDesk() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
+                aria-label={`Ir para seção ${item.name}`}
                 className={`px-3 py-1.5 rounded-full font-mono text-[10px] sm:text-xs transition-all cursor-pointer flex items-center gap-1.5 select-none ${
                   isActive 
                     ? 'bg-orange-500 text-black font-bold' 
