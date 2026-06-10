@@ -1,0 +1,6 @@
+{
+  "name": "Nogueira",
+  "description": "Nogueira // Em Construção - Uma Experiência Digital Autoral",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
