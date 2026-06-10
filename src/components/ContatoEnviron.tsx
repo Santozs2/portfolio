@@ -279,13 +279,11 @@ export default function ContatoEnviron() {
                   </p>
                 </div>
 
-                <div className="p-4 bg-stone-900/50 border border-white/5 rounded text-left font-mono text-[11px] text-orange-500">
-                  <div className="text-white/40">HASH DE TRANSMISSÃO SÉRIA:</div>
-                  <div className="text-xs break-all select-all select-all pt-1">
-                    SHA256-{Math.random().toString(36).substring(2, 10).toUpperCase()}-{Math.random().toString(36).substring(2, 10).toUpperCase()}
-                  </div>
+                <div className="p-4 bg-stone-900/50 border border-white/5 rounded text-left font-mono text-[11px] text-emerald-400">
+                  <div className="text-white/40">TRANSMISSÃO CONFIRMADA</div>
+                  <div className="text-xs pt-1">Mensagem entregue com sucesso.</div>
                 </div>
-
+                
                 <button
                   onClick={handleReset}
                   className="font-mono text-[16px] text-white/40 hover:text-white underline"
