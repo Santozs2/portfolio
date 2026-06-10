@@ -135,17 +135,6 @@ export default function CentralEnviron() {
             <span>DP-X: {mousePos.x.toFixed(0)}</span>
           </div>
 
-          <button
-            onClick={() => setInspectionActive(!inspectionActive)}
-            className={`cursor-pointer px-2 py-0.5 border text-[9px] transition-all flex items-center gap-1.5 ${
-              inspectionActive
-                ? 'border-yellow-500 bg-yellow-500/10 text-yellow-400 font-bold'
-                : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white'
-            }`}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full ${inspectionActive ? 'bg-yellow-400 animate-ping' : 'bg-white/20'}`} />
-            <span>DESENHO ESTRUTURAL [F2]</span>
-          </button>
 
           <span className="text-yellow-400 font-bold tracking-wider">{currentTime}</span>
         </div>
