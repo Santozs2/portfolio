@@ -128,6 +128,7 @@ const PROJECTS: Project[] = [
     previewPattern: 'matrix',
     images: [Image10, Image11, Image12],
   },
+  
 ];
 
 const accentMap: Record<string, { text: string; border: string; bg: string; rgb: string }> = {
