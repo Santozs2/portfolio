@@ -1,15 +1,302 @@
 <!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="Nogueira" />
-    <link rel="icon" href="./src/assets/images/logo.svg" />
-    <title>Portfolio Nogueira</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luis Nogueira — Desenvolvedor Web</title>
+  <meta name="description" content="Portfólio de Luis Antonio Nogueira, desenvolvedor web full-stack em formação no SENAI-SP. React, TypeScript, Django e APIs REST." />
+  <meta name="theme-color" content="#0b3b32" />
+  <meta property="og:title" content="Luis Nogueira — Desenvolvedor Web" />
+  <meta property="og:description" content="Construindo meu próprio universo, uma linha de código por vez. React, TypeScript e Django." />
+  <meta property="og:image" content="assets/projects/amor-cacau.webp" />
+  <link rel="icon" href="assets/projects/mascote_nogueira-removebg-preview.png" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <!-- Ativa os estados iniciais da animação antes do primeiro paint
+       (main.js desfaz isso se o GSAP não carregar). -->
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion')</script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <header class="nav">
+    <a href="#topo" class="nav__brand" aria-label="Início">Nogueira<span>.dev</span></a>
+    <nav class="nav__links" aria-label="Seções">
+      <a href="#sobre">Sobre</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#jornada">Jornada</a>
+      <a href="#stack">Stack</a>
+    </nav>
+    <a href="#contato" class="btn btn--dark btn--sm">Vamos conversar</a>
+  </header>
+
+  <main>
+    <!-- =====================================================
+         CENA 1 — HERO
+         Presa na tela enquanto você rola: o título dá zoom
+         até "mergulhar" na letra I e a cor dela vira o fundo
+         da próxima cena.
+         ===================================================== -->
+    <section class="hero" id="topo">
+      <div class="hero__stage">
+        <p class="hero__kicker" data-hero-fade>Luis Antonio Nogueira · Desenvolvedor Web</p>
+
+        <h1 class="tiles hero__title" data-tiles="load" aria-label="Construindo meu próprio universo, uma linha de código por vez.">
+          <span class="row">Construindo</span>
+          <span class="row">meu próprio universo,</span>
+          <span class="row">uma linha de código por vez.</span>
+        </h1>
+
+        <div class="hero__cta" data-hero-fade>
+          <a href="#projetos" class="btn btn--lime">Ver projetos</a>
+          <a href="https://github.com/Santozs2" target="_blank" rel="noopener" class="btn btn--ghost">GitHub ↗</a>
+        </div>
+
+        <svg class="shard shard--a" viewBox="0 0 200 200" aria-hidden="true"><polygon points="20,40 180,10 150,170 60,190" /></svg>
+        <svg class="shard shard--b" viewBox="0 0 200 200" aria-hidden="true"><polygon points="100,0 200,120 30,180" /></svg>
+        <svg class="shard shard--c" viewBox="0 0 200 200" aria-hidden="true"><polygon points="0,60 140,0 200,140 70,200" /></svg>
+        <svg class="shard shard--d" viewBox="0 0 200 200" aria-hidden="true"><polygon points="40,0 200,60 120,200 0,140" /></svg>
+
+        <div class="hero__hint" data-hero-fade aria-hidden="true">Role <span>↓</span></div>
+      </div>
+      <div class="hero__fill" aria-hidden="true"></div>
+    </section>
+
+    <!-- =====================================================
+         CENA 2 — SOBRE (lima)
+         Texto que "acende" palavra por palavra com a rolagem.
+         ===================================================== -->
+    <section class="about" id="sobre">
+      <div class="container">
+        <p class="eyebrow" data-reveal>01 — Sobre mim</p>
+        <h2 class="tiles about__title" data-tiles>
+          <span class="row">Não estou indo</span>
+          <span class="row">ao próximo nível.</span>
+          <span class="row row--accent">Estou construindo.</span>
+        </h2>
+
+        <div class="about__pin">
+          <p class="about__scrub" data-scrub-words>
+            Prazer, sou Luis Antonio dos Santos Nogueira — mas todo mundo me chama de Nogueira.
+            Tenho 17 anos e estudo Desenvolvimento de Sistemas no SENAI-SP. Desde o primeiro
+            contato com tecnologia descobri minha paixão por criar, aprender e resolver problemas,
+            e busco desafios que me façam crescer como pessoa e como profissional.
+          </p>
+        </div>
+
+        <div class="about__grid">
+          <ul class="stats">
+            <li class="stat" data-reveal><b data-count="4">0</b><span>projetos publicados</span></li>
+            <li class="stat" data-reveal><b data-count="9">0</b><span>fases de evolução</span></li>
+            <li class="stat" data-reveal><b data-count="17">0</b><span>anos de idade</span></li>
+          </ul>
+
+          <article class="goal" data-reveal>
+            <span class="tag">Meta 2026 – 2027</span>
+            <h3>Engenharia de Software agnóstica</h3>
+            <p>Parar de pensar em tecnologias isoladas e focar em arquitetura, testes e sistemas que escalam.</p>
+            <ol>
+              <li><span>01</span>Repositórios desacoplados abstraindo o banco de dados.</li>
+              <li><span>02</span>Testes unitários com mocks rodando em CI/CD.</li>
+              <li><span>03</span>Kubernetes, microsserviços e telemetria integrada.</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CENA 3 — PROJETOS
+         Palco preso na tela: os cards entram pela direita e
+         o que passa pelo centro ganha destaque; os vizinhos
+         ficam menores, inclinados e esmaecidos.
+         ===================================================== -->
+    <section class="work" id="projetos">
+      <div class="work__pin">
+        <div class="work__head container">
+          <div>
+            <p class="eyebrow" data-reveal>02 — Projetos</p>
+            <h2 class="tiles work__title" data-tiles>
+              <span class="row">Cada sistema</span>
+              <span class="row row--accent">uma intenção</span>
+            </h2>
+          </div>
+          <div class="work__counter" aria-hidden="true">
+            <span class="work__num"><b data-current>01</b> / 04</span>
+            <span class="work__bar"><i></i></span>
+          </div>
+        </div>
+
+        <div class="work__track">
+
+          <article class="card card--choco">
+            <figure class="card__media">
+              <div class="card__bar"><i></i><i></i><i></i><span>amor-cacau.onrender.com</span></div>
+              <img src="assets/projects/amor-cacau.webp" alt="Página inicial do e-commerce Amor e Cacau" width="1440" height="900" />
+            </figure>
+            <div class="card__info">
+              <div class="card__meta"><b>01</b><span>Front-end / Back-end · 2026</span></div>
+              <h3>Amor e Cacau</h3>
+              <p class="card__sub">E-commerce de chocolates artesanais</p>
+              <p>Catálogo, carrinho, frete por CEP via API dos Correios e pagamento PIX com QR Code confirmado por webhook do Mercado Pago. Painel admin com dashboard de vendas e exportação CSV.</p>
+              <ul class="chips"><li>React</li><li>TypeScript</li><li>Tailwind</li><li>Supabase</li><li>Vite</li></ul>
+              <div class="card__links">
+                <a class="btn btn--dark btn--sm" href="https://amor-cacau.onrender.com/" target="_blank" rel="noopener">Ver online ↗</a>
+                <a class="btn btn--line btn--sm" href="https://github.com/Santozs2/amor-cacau" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card--sky">
+            <figure class="card__media">
+              <div class="card__bar"><i></i><i></i><i></i><span>icefrost · cardápio</span></div>
+              <img src="assets/projects/icefrost-cardapio.webp" alt="Cardápio do sistema ICE FROST com fotos dos sorvetes" width="1440" height="900" loading="lazy" />
+            </figure>
+            <div class="card__info">
+              <div class="card__meta"><b>02</b><span>Back-end / Front-end · 2026</span></div>
+              <h3>ICE FROST</h3>
+              <p class="card__sub">Sistema de gestão para sorveteria</p>
+              <p>Gestão de produtos, fornecedores e estoque para uma sorveteria artesanal, com CRUD completo no Django ORM e interface em Django Templates. Avaliação formativa no SENAI-SP.</p>
+              <ul class="chips"><li>Django</li><li>Python</li><li>SQLite</li><li>HTML</li><li>CSS</li></ul>
+              <div class="card__links">
+                <a class="btn btn--dark btn--sm" href="https://github.com/Santozs2/icefrost" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card--orange">
+            <figure class="card__media">
+              <div class="card__bar"><i></i><i></i><i></i><span>oportuna-conecta · dashboard</span></div>
+              <img src="assets/projects/oportuna-conecta.webp" alt="Dashboard do Oportuna Conecta com matches recentes entre alunos e vagas" width="1843" height="988" loading="lazy" />
+            </figure>
+            <div class="card__info">
+              <div class="card__meta"><b>03</b><span>Full-Stack · 2026</span></div>
+              <h3>Oportuna Conecta</h3>
+              <p class="card__sub">Matching entre estudantes e vagas</p>
+              <p>Conecta estudantes do ensino técnico a vagas de emprego e estágio. React + TypeScript no front; Django REST com autenticação JWT, candidaturas e perfis no back — totalmente desacoplados via API.</p>
+              <ul class="chips"><li>React</li><li>TypeScript</li><li>Django REST</li><li>JWT</li></ul>
+              <div class="card__links">
+                <a class="btn btn--dark btn--sm" href="https://github.com/Santozs2/oportuna-conecta" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card--forest">
+            <figure class="card__media">
+              <div class="card__bar"><i></i><i></i><i></i><span>cadastro-maquinas · dashboard</span></div>
+              <img src="assets/projects/cadastro-maquinas.webp" alt="Dashboard de máquinas do sistema Cadastro de Máquinas" width="1440" height="900" loading="lazy" />
+            </figure>
+            <div class="card__info">
+              <div class="card__meta"><b>04</b><span>Back-end / Front-end · 2026</span></div>
+              <h3>Cadastro de Máquinas</h3>
+              <p class="card__sub">Gestão de equipamentos industriais</p>
+              <p>CRUD de máquinas e colaboradores com setor, patrimônio e responsável, validado com Django Forms. Feito no simulado da SAEP — prazo fechado, sem consulta.</p>
+              <ul class="chips"><li>Django</li><li>Python</li><li>SQLite</li><li>HTML</li><li>CSS</li></ul>
+              <div class="card__links">
+                <a class="btn btn--lime btn--sm" href="https://github.com/Santozs2/cadastro-maquinas" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CENA 4 — JORNADA
+         Grade em perspectiva isométrica que "deita" e se
+         achata enquanto você rola.
+         ===================================================== -->
+    <section class="journey" id="jornada">
+      <div class="journey__pin">
+        <div class="container journey__head">
+          <p class="eyebrow">03 — Jornada</p>
+          <h2 class="tiles journey__title" data-tiles>
+            <span class="row">Do HTML para a</span>
+            <span class="row">engenharia</span>
+          </h2>
+        </div>
+
+        <div class="iso">
+          <div class="iso__plane">
+            <div class="phase"><b>01</b><h3>HTML</h3><p>Semântica e acessibilidade</p><time>2025</time></div>
+            <div class="phase"><b>02</b><h3>CSS</h3><p>Layout e interação</p><time>2025</time></div>
+            <div class="phase"><b>03</b><h3>JavaScript</h3><p>Assíncrono e ES6+</p><time>2025</time></div>
+            <div class="phase"><b>04</b><h3>Banco de Dados</h3><p>Modelagem e indexação</p><time>2025</time></div>
+            <div class="phase"><b>05</b><h3>React</h3><p>Componentes e estado</p><time>2026</time></div>
+            <div class="phase"><b>06</b><h3>Django</h3><p>MVC, ORM e templates</p><time>2026</time></div>
+            <div class="phase"><b>07</b><h3>APIs</h3><p>REST, JWT e integrações</p><time>2026</time></div>
+            <div class="phase phase--live"><b>08</b><h3>Docker</h3><p>Ambientes reprodutíveis</p><time>Estudando</time></div>
+            <div class="phase phase--live"><b>09</b><h3>Eng. de Software</h3><p>Padrões e arquitetura</p><time>Estudando</time></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CENA 5 — STACK
+         Fileiras que deslizam em sentidos opostos com a rolagem.
+         ===================================================== -->
+    <section class="stack" id="stack">
+      <div class="container">
+        <p class="eyebrow" data-reveal>04 — Stack</p>
+        <h2 class="tiles stack__title" data-tiles>
+          <span class="row">Ferramentas,</span>
+          <span class="row row--accent">não troféus</span>
+        </h2>
+      </div>
+
+      <div class="belts" aria-label="Tecnologias que uso">
+        <div class="belt" data-belt="-1">
+          <span>React</span><span>TypeScript</span><span>Next.js</span><span>Tailwind CSS</span><span>JavaScript</span><span>Vite</span><span>React</span><span>TypeScript</span><span>Next.js</span><span>Tailwind CSS</span>
+        </div>
+        <div class="belt belt--alt" data-belt="1">
+          <span>Python</span><span>Django</span><span>Django REST</span><span>JWT</span><span>Node.js</span><span>APIs REST</span><span>Python</span><span>Django</span><span>Django REST</span><span>JWT</span>
+        </div>
+        <div class="belt" data-belt="-1">
+          <span>Supabase</span><span>PostgreSQL</span><span>SQLite</span><span>Docker</span><span>Git</span><span>Vercel</span><span>Supabase</span><span>PostgreSQL</span><span>SQLite</span><span>Docker</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CENA 6 — CONTATO
+         ===================================================== -->
+    <section class="contact" id="contato">
+      <div class="container">
+        <p class="eyebrow" data-reveal>05 — Contato</p>
+        <h2 class="tiles contact__title" data-tiles>
+          <span class="row">Vamos construir</span>
+          <span class="row row--accent">algo juntos</span>
+        </h2>
+        <p class="contact__lead" data-reveal>Arquitetura, produtos digitais marcantes ou uma proposta de estágio — minha caixa está aberta.</p>
+
+        <div class="contact__actions" data-reveal>
+          <a class="btn btn--lime btn--lg" href="mailto:sn.luisantonio24@gmail.com">sn.luisantonio24@gmail.com</a>
+          <button class="btn btn--ghost btn--lg" type="button" data-copy="sn.luisantonio24@gmail.com">Copiar e-mail</button>
+        </div>
+
+        <ul class="socials">
+          <li data-reveal><a href="https://github.com/Santozs2" target="_blank" rel="noopener">GitHub <span>↗</span></a></li>
+          <li data-reveal><a href="https://www.linkedin.com/in/luis-antonio-dos-santos-nogueira-52980634b/" target="_blank" rel="noopener">LinkedIn <span>↗</span></a></li>
+        </ul>
+      </div>
+
+      <footer class="footer container">
+        <span>© <span data-year>2026</span> Luis Antonio Nogueira</span>
+        <span>Feito com alma e lógica dura.</span>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
