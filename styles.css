@@ -1,0 +1,403 @@
+/* =========================================================
+   Tokens
+   ========================================================= */
+:root {
+  --forest: #0b3b32;
+  --forest-2: #0f4a3f;
+  --lime: #e5ffc3;
+  --sky: #cfe5ff;
+  --orange: #ff6a1a;
+  --peach: #ffa36c;
+  --cream: #fff6ec;
+  --choco: #3a2117;
+  --ink: #0d1613;
+  --white: #ffffff;
+
+  --font-tile: "Rubik Mono One", "Arial Black", sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius: 28px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1240px;
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--forest);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 400; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+figure { margin: 0; }
+
+::selection { background: var(--orange); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 8px; }
+
+.container { width: min(var(--max), 100% - var(--gutter) * 2); margin-inline: auto; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   Tipografia em blocos (tiles)
+   Cada letra nasce como um bloco arredondado que se
+   transforma na própria letra — a assinatura visual.
+   ========================================================= */
+.tiles {
+  font-family: var(--font-tile);
+  text-transform: uppercase;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+.tiles .row { display: block; }
+.tiles .row--accent { color: var(--orange); }
+.tiles .word { display: inline-block; white-space: nowrap; }
+.tiles .ch { position: relative; display: inline-block; }
+.tiles .ch__t {
+  position: absolute;
+  inset: 0.14em 0.03em 0.1em;
+  border-radius: 0.16em;
+  background: currentColor;
+  transform: scale(0);
+  pointer-events: none;
+}
+/* Estados iniciais só existem quando o motor de animação carregou */
+.motion .tiles .ch__g { opacity: 0; }
+.motion [data-reveal] { opacity: 0; transform: translate3d(0, 48px, 0); }
+
+/* =========================================================
+   Barra de progresso + navegação
+   ========================================================= */
+.progress { position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60; pointer-events: none; }
+.progress span { display: block; height: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0); }
+
+.nav {
+  position: fixed; top: 14px; left: 50%; z-index: 50;
+  width: min(var(--max), 100% - 24px);
+  transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 10px 10px 22px;
+  border-radius: 999px;
+  background: rgb(13 22 19 / 0.78);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  color: var(--lime);
+  transition: transform 600ms var(--ease);
+}
+.nav.is-hidden { transform: translate(-50%, -150%); }
+.nav__brand { font-family: var(--font-display); font-weight: 800; font-size: 20px; text-decoration: none; letter-spacing: -0.02em; }
+.nav__brand span { color: var(--orange); }
+.nav__links { display: flex; gap: 4px; }
+.nav__links a { text-decoration: none; font-weight: 500; font-size: 15px; padding: 8px 14px; border-radius: 999px; transition: background 200ms, color 200ms; }
+.nav__links a:hover, .nav__links a.is-active { background: var(--lime); color: var(--forest); }
+@media (max-width: 760px) { .nav__links { display: none; } }
+
+/* =========================================================
+   Botões / tags / chips
+   ========================================================= */
+.btn {
+  --bg: var(--ink); --fg: var(--white);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 16px/1 var(--font-body);
+  padding: 16px 26px; border-radius: 999px;
+  border: 2px solid transparent;
+  background: var(--bg); color: var(--fg);
+  text-decoration: none; cursor: pointer;
+  transition: transform 300ms var(--ease), background 200ms, color 200ms, border-color 200ms;
+}
+.btn:hover { transform: translateY(-3px); }
+.btn:active { transform: translateY(0) scale(0.97); }
+.btn--sm { padding: 11px 18px; font-size: 14px; }
+.btn--lg { padding: 20px 30px; font-size: clamp(15px, 2vw, 19px); }
+.btn--dark { --bg: var(--ink); --fg: var(--white); }
+.btn--lime { --bg: var(--lime); --fg: var(--forest); }
+.btn--ghost { --bg: transparent; --fg: currentColor; border-color: currentColor; color: inherit; }
+.btn--line { --bg: transparent; --fg: currentColor; border-color: currentColor; color: inherit; }
+
+.tag {
+  display: inline-block;
+  font: 500 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 8px 12px; border-radius: 999px;
+  background: var(--forest); color: var(--lime);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { font: 500 12px/1 var(--font-mono); padding: 7px 11px; border-radius: 999px; border: 1.5px solid currentColor; opacity: 0.85; }
+
+/* =========================================================
+   CENA 1 — Hero
+   ========================================================= */
+.hero { position: relative; height: 100vh; height: 100svh; background: var(--forest); color: var(--lime); overflow: hidden; }
+.hero__stage {
+  position: absolute; inset: 0;
+  display: grid; place-content: center; justify-items: center;
+  text-align: center;
+  padding: 100px var(--gutter) 80px;
+}
+.hero__kicker { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; margin-bottom: 32px; }
+.hero__title {
+  position: relative; z-index: 2;
+  font-size: clamp(34px, 9vw, 136px);
+  will-change: transform;
+}
+.hero__title .row:last-child { color: var(--orange); }
+.hero__cta { margin-top: 44px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; position: relative; z-index: 3; }
+.hero__hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; }
+.hero__hint span { display: inline-block; animation: bob 1.6s var(--ease) infinite; }
+@keyframes bob { 50% { transform: translateY(5px); } }
+
+.hero__fill { position: absolute; inset: 0; z-index: 5; background: var(--lime); opacity: 0; pointer-events: none; }
+
+.shard { position: absolute; z-index: 1; fill: var(--orange); will-change: transform; }
+.shard--a { width: clamp(110px, 16vw, 250px); top: 14%; right: 7%; }
+.shard--b { width: clamp(70px, 9vw, 150px); bottom: 12%; left: 8%; fill: var(--sky); opacity: 0.25; }
+.shard--c { width: clamp(60px, 8vw, 120px); top: 18%; left: 10%; fill: var(--lime); }
+.shard--d { width: clamp(90px, 12vw, 190px); bottom: 8%; right: 18%; fill: var(--peach); }
+@media (max-width: 760px) {
+  .shard--a { top: 11%; right: -30px; }
+  .shard--c { top: 13%; left: -14px; }
+  .shard--d { right: -20px; }
+}
+
+/* =========================================================
+   CENA 2 — Sobre
+   ========================================================= */
+.about { position: relative; background: var(--lime); color: var(--forest); padding: clamp(110px, 14vw, 180px) 0 clamp(90px, 12vw, 160px); }
+.about__title { font-size: clamp(26px, 5.6vw, 84px); }
+.about__pin { padding: clamp(56px, 8vw, 110px) 0; }
+.about__scrub {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(24px, 3.6vw, 50px); line-height: 1.18; letter-spacing: -0.02em;
+  max-width: 24ch;
+}
+.motion .about__scrub .sw { opacity: 0.14; }
+
+.about__grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; align-items: stretch; }
+.stats { display: grid; gap: 14px; }
+.stat {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 22px 26px; border-radius: 22px;
+  background: var(--forest); color: var(--lime);
+}
+.stat b { font: 400 clamp(38px, 5vw, 60px)/1 var(--font-tile); font-variant-numeric: tabular-nums; }
+.stat span { font: 500 12px/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; text-align: right; }
+
+.goal { padding: clamp(26px, 4vw, 44px); border-radius: var(--radius); background: var(--white); }
+.goal h3 { font: 800 clamp(26px, 3vw, 40px)/1.02 var(--font-display); letter-spacing: -0.03em; margin: 18px 0 12px; }
+.goal > p { opacity: 0.75; }
+.goal ol { margin-top: 22px; display: grid; gap: 10px; }
+.goal li { display: flex; gap: 14px; padding: 14px 18px; border-radius: 16px; background: var(--lime); font-weight: 500; }
+.goal li span { font: 500 13px/1.75 var(--font-mono); color: var(--orange); }
+@media (max-width: 860px) { .about__grid { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   CENA 3 — Projetos
+   ========================================================= */
+.work { position: relative; background: var(--cream); color: var(--forest); }
+.work__title { font-size: clamp(28px, 4.6vw, 68px); }
+.work__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.work__head .eyebrow { margin-bottom: 18px; }
+
+.work__counter { display: grid; gap: 10px; justify-items: end; padding-bottom: 6px; }
+.work__num { font: 500 14px/1 var(--font-mono); letter-spacing: 0.06em; }
+.work__num b { font: 400 34px/1 var(--font-tile); color: var(--orange); vertical-align: -6px; }
+.work__bar { width: 160px; height: 4px; border-radius: 4px; background: rgb(11 59 50 / 0.15); overflow: hidden; }
+.work__bar i { display: block; height: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0.25); }
+
+.work__pin {
+  height: 100vh; height: 100svh;
+  display: flex; flex-direction: column; justify-content: center; gap: clamp(24px, 4vh, 48px);
+  padding-top: 84px;
+  overflow: hidden;
+}
+.work__track { display: flex; gap: 40px; padding-inline: var(--gutter); will-change: transform; }
+
+.card {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(1000px, 72vw);
+  height: min(560px, calc(100svh - 330px));
+  min-height: 420px;
+  will-change: transform, opacity;
+  display: grid; grid-template-columns: 1.45fr 1fr; gap: 28px;
+  padding: 18px;
+  border-radius: 32px;
+}
+.card--choco  { background: var(--choco);  color: var(--cream); }
+.card--sky    { background: var(--sky);    color: var(--forest); }
+.card--orange { background: var(--orange); color: var(--ink); }
+.card--forest { background: var(--forest); color: var(--lime); }
+
+.card__media {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden;
+  background: #111;
+}
+.card__bar {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  background: #1b1b1b; color: #9a9a9a;
+  font: 500 11px/1 var(--font-mono);
+}
+.card__bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a3a; }
+.card__bar i:nth-child(1) { background: #ff5f57; }
+.card__bar i:nth-child(2) { background: #febc2e; }
+.card__bar i:nth-child(3) { background: #28c840; }
+.card__bar span { margin-left: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card__media img { flex: 1; width: 100%; min-height: 0; object-fit: cover; object-position: top center; }
+
+.card__info { display: flex; flex-direction: column; gap: 14px; padding: 18px 12px 12px 0; min-width: 0; }
+.card__meta { display: flex; justify-content: space-between; font: 500 12px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; }
+.card h3 { font: 400 clamp(26px, 2.8vw, 42px)/1.02 var(--font-tile); text-transform: uppercase; letter-spacing: -0.03em; }
+.card__sub { font-weight: 700; font-size: 18px; }
+.card__info > p:not(.card__sub) { font-size: 15.5px; line-height: 1.55; opacity: 0.85; }
+.card__links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 860px) {
+  .work__pin { height: auto; display: block; overflow: visible; padding: clamp(110px, 14vw, 170px) 0 80px; }
+  .work__head { margin-bottom: 40px; }
+  .work__counter { display: none; }
+  .work__track { flex-direction: column; gap: 20px; }
+  .card { width: 100%; height: auto; min-height: 0; grid-template-columns: 1fr; gap: 14px; padding: 12px; border-radius: 26px; }
+  .card__media { aspect-ratio: 16 / 11; }
+  .card__info { padding: 8px 8px 10px; }
+}
+
+/* =========================================================
+   CENA 4 — Jornada (isométrica)
+   ========================================================= */
+.journey { position: relative; background: var(--orange); color: var(--ink); }
+.journey__pin {
+  min-height: 100vh; min-height: 100svh;
+  display: grid; grid-template-rows: auto 1fr; align-items: center;
+  padding: clamp(96px, 11vw, 130px) 0 48px;
+  overflow: hidden;
+}
+.journey__head .eyebrow { margin-bottom: 18px; }
+.journey__title { font-size: clamp(28px, 5vw, 72px); }
+
+.iso { perspective: 1800px; display: grid; place-items: center; padding: 24px var(--gutter); }
+.iso__plane {
+  width: min(980px, 100%);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.phase {
+  position: relative;
+  display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-content: start;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: var(--cream);
+  box-shadow: 10px 12px 0 rgb(13 22 19 / 0.9);
+}
+.phase b { grid-row: span 3; font: 400 30px/1 var(--font-tile); color: var(--orange); }
+.phase h3 { font: 800 22px/1.05 var(--font-display); letter-spacing: -0.02em; }
+.phase p { font-size: 14px; opacity: 0.7; }
+.phase time {
+  justify-self: start; margin-top: 10px;
+  font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 5px 8px; border-radius: 999px; background: var(--lime); color: var(--forest);
+}
+.phase--live { background: var(--forest); color: var(--lime); }
+.phase--live time { background: var(--orange); color: var(--ink); }
+.phase--live time::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: currentColor; vertical-align: 1px; animation: blink 1.2s infinite; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+@media (max-width: 860px) {
+  .iso__plane { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .phase { padding: 16px; grid-template-columns: 1fr; box-shadow: 6px 8px 0 rgb(13 22 19 / 0.9); }
+  .phase b { grid-row: auto; font-size: 22px; margin-bottom: 8px; }
+  .phase h3 { font-size: 18px; }
+}
+
+/* =========================================================
+   CENA 5 — Stack
+   ========================================================= */
+.stack { position: relative; background: var(--sky); color: var(--forest); padding: clamp(110px, 14vw, 170px) 0; overflow: hidden; }
+.stack__title { font-size: clamp(30px, 6.4vw, 96px); }
+.belts { margin-top: clamp(56px, 8vw, 100px); display: grid; gap: 14px; }
+.belt { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.belt span {
+  flex: 0 0 auto;
+  font: 800 clamp(28px, 5vw, 64px)/1 var(--font-display); letter-spacing: -0.03em;
+  padding: 18px 34px; border-radius: 999px;
+  background: var(--white);
+}
+.belt--alt span { background: var(--forest); color: var(--lime); }
+.belt span:nth-child(3n) { background: var(--orange); color: var(--ink); }
+
+/* =========================================================
+   CENA 6 — Contato
+   ========================================================= */
+.contact { position: relative; background: var(--forest); color: var(--lime); padding-top: clamp(110px, 14vw, 180px); }
+.contact__title { font-size: clamp(28px, 7.4vw, 112px); }
+.contact__lead { margin-top: 28px; font-size: clamp(18px, 2vw, 22px); max-width: 46ch; opacity: 0.85; }
+.contact__actions { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+.contact__actions .btn--lime { overflow-wrap: anywhere; }
+
+.socials { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 680px; }
+.socials a {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 28px; border-radius: 22px;
+  background: var(--forest-2);
+  font: 800 clamp(22px, 3vw, 32px)/1 var(--font-display);
+  text-decoration: none;
+  transition: background 250ms, color 250ms;
+}
+.socials a span { transition: transform 300ms var(--ease); }
+.socials a:hover { background: var(--lime); color: var(--forest); }
+.socials a:hover span { transform: translate(4px, -4px); }
+@media (max-width: 520px) { .socials { grid-template-columns: 1fr; } }
+
+.footer {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+  margin-top: clamp(90px, 12vw, 160px);
+  padding: 28px 0 36px;
+  border-top: 1px solid rgb(229 255 195 / 0.15);
+  font: 500 13px/1.4 var(--font-mono); opacity: 0.7;
+}
+
+/* =========================================================
+   Toast
+   ========================================================= */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 70;
+  padding: 14px 22px; border-radius: 999px;
+  background: var(--ink); color: var(--lime); font-weight: 700;
+  opacity: 0; visibility: hidden; transform: translate(-50%, 24px);
+  transition: transform 500ms var(--ease), opacity 300ms, visibility 0s 500ms;
+}
+.toast.is-on { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition-delay: 0s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__hint span, .phase--live time::before { animation: none; }
+}
