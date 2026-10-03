@@ -2,3 +2,5 @@
 .vercel
 .env*
 .gitignore
+# modelo bruto do Hunyuan3D (9,6 MB); o site usa assets/castor.glb
+assets/projects/white_mesh.glb

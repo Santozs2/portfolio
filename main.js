@@ -31,6 +31,115 @@
     });
   });
 
+  /* ---------- Nav: pílula → botão flutuante do castor ---------- */
+  // Fica fora do bloco de animação: funciona mesmo sem GSAP ou com movimento reduzido.
+  const nav = $('.nav');
+  const brand = $('.nav__brand');
+  const mobile = matchMedia('(max-width: 760px)');
+  const COMPACT_AT = 140;   // px rolados até a pílula se recolher
+  const CLOSE_AFTER = 80;   // px rolados com o menu aberto até ele se fechar sozinho
+  let openedAt = 0;
+
+  // o castor abre o menu quando os links não estão à vista (recolhido ou celular)
+  const isToggle = () => nav.classList.contains('is-compact') || mobile.matches;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    brand.setAttribute('aria-expanded', String(open));
+    openedAt = scrollY;
+    syncLabel();
+  };
+  const syncLabel = () => {
+    brand.setAttribute('aria-label',
+      !isToggle() ? 'Voltar ao início' : nav.classList.contains('is-open') ? 'Fechar menu' : 'Abrir menu');
+  };
+
+  const onScroll = () => {
+    const y = scrollY;
+    nav.classList.toggle('is-compact', y > COMPACT_AT);
+    if (nav.classList.contains('is-open') && Math.abs(y - openedAt) > CLOSE_AFTER) setOpen(false);
+    syncLabel();
+  };
+  let ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; onScroll(); });
+  }, { passive: true });
+  mobile.addEventListener('change', syncLabel);
+  onScroll();
+
+  brand.addEventListener('click', () => {
+    if (isToggle()) return setOpen(!nav.classList.contains('is-open'));
+    if (window.lenis) window.lenis.scrollTo(0, { duration: 1.6 });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  // fecha ao escolher um link, ao clicar fora ou com Esc
+  $$('.nav__menu a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-open') && !nav.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); brand.focus(); }
+  });
+
+  /* ---------- Castor olhando para o mouse ---------- */
+  // A cabeça gira na direção do cursor; o botão fica parado (continua fácil de clicar).
+  // Com WebGL, é o modelo 3D (castor3d.js + assets/castor.glb) que gira de verdade;
+  // sem ele, a <img> PNG faz uma inclinação em CSS no lugar.
+  // A rotação do botão (hover/recolher) fica no <button>, então um não briga com o outro.
+  const beaver = $('img', brand);
+  const canvas3d = $('canvas', brand);
+  let beaver3d = null;
+  const canLook = matchMedia('(hover: hover) and (pointer: fine)').matches
+    && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MAX_YAW = 0.75, MAX_PITCH = 0.5; // radianos (≈ 43° e 29°) no modelo 3D
+  // sem mouse (toque) ou com movimento reduzido: pose fixa levemente de lado, para mostrar o volume
+  const REST = canLook ? { x: 0, y: 0 } : { x: -0.35, y: 0.15 };
+  const look = { ...REST }, aim = { ...REST };
+
+  const pose = () => {
+    if (beaver3d) return beaver3d.look(look.x * MAX_YAW, look.y * MAX_PITCH);
+    if (canLook) beaver.style.transform =
+      `perspective(160px) translate(${look.x * 4}px, ${look.y * 4}px) ` +
+      `rotateY(${look.x * 38}deg) rotateX(${-look.y * 28}deg)`;
+  };
+
+  // o modelo (~145 KB) só é baixado depois que a página terminou de carregar
+  addEventListener('load', () => {
+    if (!window.Castor3D || !canvas3d) return;
+    Castor3D.mount(canvas3d, 'assets/castor.glb')
+      .then((c) => { beaver3d = c; beaver.style.transform = ''; pose(); brand.classList.add('has-3d'); })
+      .catch(() => {}); // fica a imagem PNG
+  });
+
+  if (canLook) {
+    const REACH = 420; // px de distância em que o olhar atinge o máximo
+    let raf = 0;
+
+    const render = () => {
+      // aproxima suavemente do alvo (inércia), e para o loop quando chega
+      look.x += (aim.x - look.x) * 0.14;
+      look.y += (aim.y - look.y) * 0.14;
+      pose();
+      raf = Math.abs(aim.x - look.x) + Math.abs(aim.y - look.y) > 0.002 ? requestAnimationFrame(render) : 0;
+    };
+    const aimAt = (x, y) => {
+      aim.x = x; aim.y = y;
+      if (!raf) raf = requestAnimationFrame(render);
+    };
+
+    addEventListener('pointermove', (e) => {
+      const r = brand.getBoundingClientRect(); // o botão, não a img/canvas, que já estão girados
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      const clamp = (v) => Math.max(-1, Math.min(1, v));
+      aimAt(clamp(dx / REACH), clamp(dy / REACH));
+    }, { passive: true });
+    // mouse saiu da janela → volta a olhar para frente
+    document.documentElement.addEventListener('pointerleave', () => aimAt(0, 0));
+  }
+
   /* ---------- divisão de texto ---------- */
 
   // [data-tiles] → cada letra vira: glifo + bloco (tile) por cima
@@ -131,17 +240,6 @@
     const bar = $('.progress span');
     ScrollTrigger.create({ start: 0, end: 'max', onUpdate: (s) => gsap.set(bar, { scaleX: s.progress }) });
 
-    const nav = $('.nav');
-    let lastY = 0;
-    ScrollTrigger.create({
-      start: 0, end: 'max',
-      onUpdate: (s) => {
-        const y = s.scroll();
-        nav.classList.toggle('is-hidden', y > lastY && y > 300);
-        lastY = y;
-      },
-    });
-
     /* ===== CENA 1 — Hero: zoom que mergulha numa letra ===== */
     const title = $('.hero__title');
     // Alvo do mergulho: o primeiro "I" (haste sólida no meio). Sem "I", a haste esquerda da 1ª letra.
@@ -167,17 +265,27 @@
 
     gsap.from('.shard', { scale: 0, rotate: -90, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.6 });
 
+    // expo.in "normalizado": vale exatamente 0 no início. O expo.in do GSAP salta para ~0.001
+    // logo após 0, e como o pin começa em -0.001 o título carregava com escala 1.07 em vez de 1.
+    const dive = (p) => (2 ** (10 * p) - 1) / 1023;
+    // Valores iniciais explícitos (fromTo): com .to() a linha do tempo gravava o estado da
+    // entrada dos shards (escala 0) como ponto de partida, e eles sumiam ao voltar ao topo.
+    const rest = { x: 0, y: 0, rotate: 0, scale: 1 };
+    const fly = (to) => ({ ...to, duration: 0.8, ease: 'power2.in', immediateRender: false });
+
     gsap.timeline({
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=230%', scrub: 1, pin: true, anticipatePin: 1, invalidateOnRefresh: true },
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=150%', scrub: 1, pin: true, anticipatePin: 1, invalidateOnRefresh: true },
     })
-      .to('[data-hero-fade]', { opacity: 0, y: -40, duration: 0.12, ease: 'none' }, 0)
-      .to(title, { x: () => origin.x, y: () => origin.y, duration: 0.55, ease: 'power2.inOut' }, 0)
-      .to(title, { scale: 70, duration: 1, ease: 'expo.in' }, 0)
-      .to('.shard--a', { x: 420, y: -620, rotate: 140, scale: 1.8, duration: 0.8, ease: 'power2.in' }, 0)
-      .to('.shard--b', { x: -300, y: 380, rotate: -80, scale: 2.2, duration: 0.8, ease: 'power2.in' }, 0)
-      .to('.shard--c', { x: -360, y: -520, rotate: -120, scale: 1.6, duration: 0.8, ease: 'power2.in' }, 0)
-      .to('.shard--d', { x: 380, y: 520, rotate: 70, scale: 2, duration: 0.8, ease: 'power2.in' }, 0)
-      .to('.hero__fill', { opacity: 1, duration: 0.1, ease: 'none' }, 0.9);
+      .fromTo('[data-hero-fade]', { opacity: 1, y: 0 }, { opacity: 0, y: -40, duration: 0.12, ease: 'none', immediateRender: false }, 0)
+      // force3D: false → transform 2D, sem camada de GPU gigante (ver .hero__title no CSS).
+      // A escala para em 40: a haste do "I" já passa da altura da tela e a faixa lima completa o mergulho.
+      .fromTo(title, { x: 0, y: 0 }, { x: () => origin.x, y: () => origin.y, duration: 0.55, ease: 'power2.inOut', force3D: false, immediateRender: false }, 0)
+      .fromTo(title, { scale: 1 }, { scale: 40, duration: 1, ease: dive, force3D: false, immediateRender: false }, 0)
+      .fromTo('.shard--a', rest, fly({ x: 420, y: -620, rotate: 140, scale: 1.8 }), 0)
+      .fromTo('.shard--b', rest, fly({ x: -300, y: 380, rotate: -80, scale: 2.2 }), 0)
+      .fromTo('.shard--c', rest, fly({ x: -360, y: -520, rotate: -120, scale: 1.6 }), 0)
+      .fromTo('.shard--d', rest, fly({ x: 380, y: 520, rotate: 70, scale: 2 }), 0)
+      .fromTo('.hero__fill', { clipPath: 'inset(0% 50%)' }, { clipPath: 'inset(0% 0%)', duration: 0.12, ease: 'power2.in', immediateRender: false }, 0.88);
 
     /* ===== CENA 2 — Sobre: palavras acendem com a rolagem ===== */
     gsap.to('.about__scrub .sw', {
@@ -197,7 +305,7 @@
 
       pin.style.position = 'relative'; // cards medem offsetLeft a partir do palco
       const center = (c) => c.offsetLeft + c.offsetWidth / 2;
-      const startX = () => pin.clientWidth * 1.02 - cards[0].offsetLeft;   // 1º card logo após a borda direita
+      const startX = () => pin.clientWidth * 0.62 - cards[0].offsetLeft;   // 1º card já entrando pela direita
       const endX = () => pin.clientWidth / 2 - center(cards[cards.length - 1]); // último card centralizado
 
       // Foco: quanto mais perto do centro, maior, reto e opaco; longe dele, menor, inclinado e esmaecido
@@ -227,7 +335,7 @@
         scrollTrigger: {
           trigger: pin,
           start: 'top top',
-          end: () => `+=${(startX() - endX()) * 1.15}`,
+          end: () => `+=${startX() - endX()}`,
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -252,7 +360,7 @@
     /* ===== CENA 4 — Jornada: plano isométrico que deita ===== */
     mm.add('(min-width: 861px)', () => {
       gsap.timeline({
-        scrollTrigger: { trigger: '.journey__pin', start: 'top top', end: '+=140%', scrub: 1, pin: true, anticipatePin: 1 },
+        scrollTrigger: { trigger: '.journey__pin', start: 'top top', end: '+=90%', scrub: 1, pin: true, anticipatePin: 1 },
       })
         .fromTo('.iso__plane',
           { rotateX: 56, rotateZ: -36, scale: 0.72, y: 40 },

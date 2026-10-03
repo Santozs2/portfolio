@@ -2,3 +2,7 @@
 .env*
 .claude
 node_modules
+
+# arquivos-fonte do mascote, não usados pelo site (o site usa assets/castor.glb e o PNG sem fundo)
+assets/projects/white_mesh.glb
+assets/projects/mascote nogueira.png

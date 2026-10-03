@@ -22,20 +22,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="castor3d.js" defer></script>
   <script src="main.js" defer></script>
 </head>
 <body>
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <header class="nav">
-    <a href="#topo" class="nav__brand" aria-label="Início">Nogueira<span>.dev</span></a>
-    <nav class="nav__links" aria-label="Seções">
-      <a href="#sobre">Sobre</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#jornada">Jornada</a>
-      <a href="#stack">Stack</a>
-    </nav>
-    <a href="#contato" class="btn btn--dark btn--sm">Vamos conversar</a>
+    <!-- No topo: volta ao início. Recolhido (ou no celular): abre/fecha o menu. -->
+    <button class="nav__brand" type="button" aria-controls="nav-menu" aria-expanded="false" aria-label="Voltar ao início">
+      <img src="assets/projects/mascote_nogueira-removebg-preview.png" alt="" width="44" height="44" />
+      <!-- modelo 3D (castor3d.js); substitui a imagem quando o WebGL carrega -->
+      <canvas aria-hidden="true"></canvas>
+    </button>
+    <div class="nav__menu" id="nav-menu">
+      <nav class="nav__links" aria-label="Seções">
+        <a href="#sobre">Sobre</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#jornada">Jornada</a>
+        <a href="#stack">Stack</a>
+      </nav>
+      <a href="#contato" class="btn btn--dark btn--sm">Vamos conversar</a>
+    </div>
   </header>
 
   <main>
