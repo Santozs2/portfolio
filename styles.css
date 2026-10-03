@@ -103,11 +103,12 @@ figure { margin: 0; }
    • .is-compact (rolou para baixo) → a pílula se recolhe para dentro do castor,
      que vira um botão flutuante redondo;
    • .is-compact.is-open (clicou no castor) → a pílula se abre de novo com os links.
-   Ancorada à esquerda, para o castor ficar parado enquanto a pílula encolhe/expande. */
+   Centralizada: encolhe pelos dois lados até o botão parar no meio da tela,
+   e se abre a partir do meio. */
 .nav {
   --h: 64px;
   position: fixed; top: 14px; z-index: 50;
-  left: max(12px, (100% - var(--max)) / 2);
+  left: 50%; transform: translateX(-50%);
   width: min(var(--max), 100% - 24px);
   min-height: var(--h);
   display: flex; align-items: center; gap: 16px;
