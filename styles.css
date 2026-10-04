@@ -106,24 +106,26 @@ figure { margin: 0; }
    Centralizada: encolhe pelos dois lados até o botão parar no meio da tela,
    e se abre a partir do meio. */
 .nav {
-  --h: 72px;                      /* altura da pílula = diâmetro do botão recolhido */
-  --b: calc(var(--h) - 20px);     /* tamanho do castor (o resto é o respiro do círculo) */
+  --h: 72px;                      /* altura da pílula no topo */
+  --b: 52px;                      /* tamanho do castor */
   position: fixed; top: 14px; z-index: 50;
   left: 50%; transform: translateX(-50%);
   width: min(var(--max), 100% - 24px);
   min-height: var(--h);
   display: flex; align-items: center; gap: 16px;
-  padding: 0 10px;
+  padding: 0 calc((var(--h) - var(--b)) / 2);   /* castor sempre centrado no "círculo" da ponta */
   border-radius: calc(var(--h) / 2);
   background: rgb(13 22 19 / 0.78);
   backdrop-filter: blur(14px) saturate(1.4);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   color: var(--lime);
   overflow: hidden;
-  transition: width 700ms var(--ease), background 400ms, box-shadow 400ms;
+  transition: width 700ms var(--ease), min-height 500ms var(--ease), padding 500ms var(--ease),
+    border-radius 500ms var(--ease), background 400ms, box-shadow 400ms;
 }
-/* fora do topo ela flutua sobre seções claras: fundo mais opaco para não ficar acinzentada */
-.nav.is-compact { background: rgb(13 22 19 / 0.94); box-shadow: 0 10px 30px rgb(13 22 19 / 0.3); }
+/* fora do topo ela flutua sobre seções claras: fundo mais opaco para não ficar acinzentada.
+   O botão recolhido é maior que a pílula do topo, para o castor ter respiro dentro do círculo. */
+.nav.is-compact { --h: 88px; background: rgb(13 22 19 / 0.94); box-shadow: 0 10px 30px rgb(13 22 19 / 0.3); }
 .nav.is-compact:not(.is-open) { width: var(--h); }
 
 .nav__brand {
