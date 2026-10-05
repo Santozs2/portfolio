@@ -17,15 +17,34 @@
   <!-- Ativa os estados iniciais da animação antes do primeiro paint
        (main.js desfaz isso se o GSAP não carregar). -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion')</script>
+  <!-- Splash do castor: só na 1ª visita e sem "reduzir movimento". A trava de 12 s
+       garante que ninguém fica preso se splash.js não carregar. -->
+  <script>
+    (function () {
+      var d = document.documentElement, seen = false;
+      try { seen = !!localStorage.getItem('nogueira:splash'); } catch (e) {}
+      if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('splash-on');
+      // trava de segurança: só age se splash.js não tiver carregado
+      setTimeout(function () { if (!window.splashDone) d.classList.remove('splash-on'); }, 12000);
+    })();
+  </script>
   <link rel="stylesheet" href="styles.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="castor3d.js" defer></script>
+  <script src="splash.js" defer></script>
   <script src="main.js" defer></script>
 </head>
 <body>
+  <!-- Splash: o vídeo (assets/splash.mp4) só é baixado quando ela aparece -->
+  <div class="splash" aria-label="Abertura">
+    <video data-src="assets/splash.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+    <button class="splash__skip" type="button">Pular <span aria-hidden="true">→</span></button>
+  </div>
+
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <header class="nav">
