@@ -195,6 +195,13 @@
     window.lenis = lenis; // útil para depurar no console
   }
 
+  // Splash (splash.js): a abertura só começa quando ela sai
+  const splashDone = window.splashDone || Promise.resolve();
+  if (lenis && root.classList.contains('splash-on')) {
+    lenis.stop();
+    splashDone.then(() => lenis.start());
+  }
+
   $$('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -263,7 +270,8 @@
     setOrigin();
     ScrollTrigger.addEventListener('refreshInit', setOrigin);
 
-    gsap.from('.shard', { scale: 0, rotate: -90, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.6 });
+    gsap.set('.shard', { scale: 0, rotate: -90 });
+    splashDone.then(() => gsap.to('.shard', { scale: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.5 }));
 
     // expo.in "normalizado": vale exatamente 0 no início. O expo.in do GSAP salta para ~0.001
     // logo após 0, e como o pin começa em -0.001 o título carregava com escala 1.07 em vez de 1.
@@ -415,7 +423,7 @@
 
     /* ===== Títulos em tiles ===== */
     $$('[data-tiles]').forEach((el) => {
-      if (el.dataset.tiles === 'load') { playTiles(el, 0.25); return; }
+      if (el.dataset.tiles === 'load') { splashDone.then(() => playTiles(el, 0.2)); return; }
       ScrollTrigger.create({ trigger: el, start: 'top 82%', once: true, onEnter: () => playTiles(el) });
     });
 
