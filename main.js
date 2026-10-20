@@ -179,7 +179,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!window.gsap || !window.ScrollTrigger || reduce) {
     root.classList.remove('motion');
-    $$('[data-count]').forEach((el) => (el.textContent = el.dataset.count));
+    $$('[data-count]').forEach((el) => (el.textContent = el.dataset.count + (el.dataset.suffix || '')));
     return;
   }
 
@@ -193,13 +193,6 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     window.lenis = lenis; // útil para depurar no console
-  }
-
-  // Splash (splash.js): a abertura só começa quando ela sai
-  const splashDone = window.splashDone || Promise.resolve();
-  if (lenis && root.classList.contains('splash-on')) {
-    lenis.stop();
-    splashDone.then(() => lenis.start());
   }
 
   $$('a[href^="#"]').forEach((a) => {
@@ -234,7 +227,7 @@
   function countUp(el) {
     const end = +el.dataset.count;
     const obj = { v: 0 };
-    gsap.to(obj, { v: end, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(obj.v)) });
+    gsap.to(obj, { v: end, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(obj.v) + (el.dataset.suffix || '')) });
   }
 
   /* ---------- Inicia depois das fontes (medidas dependem delas) ---------- */
@@ -271,7 +264,7 @@
     ScrollTrigger.addEventListener('refreshInit', setOrigin);
 
     gsap.set('.shard', { scale: 0, rotate: -90 });
-    splashDone.then(() => gsap.to('.shard', { scale: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.5 }));
+    gsap.to('.shard', { scale: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.5 });
 
     // expo.in "normalizado": vale exatamente 0 no início. O expo.in do GSAP salta para ~0.001
     // logo após 0, e como o pin começa em -0.001 o título carregava com escala 1.07 em vez de 1.
@@ -423,7 +416,7 @@
 
     /* ===== Títulos em tiles ===== */
     $$('[data-tiles]').forEach((el) => {
-      if (el.dataset.tiles === 'load') { splashDone.then(() => playTiles(el, 0.2)); return; }
+      if (el.dataset.tiles === 'load') { playTiles(el, 0.2); return; }
       ScrollTrigger.create({ trigger: el, start: 'top 82%', once: true, onEnter: () => playTiles(el) });
     });
 
