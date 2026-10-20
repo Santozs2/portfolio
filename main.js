@@ -169,6 +169,84 @@
     });
   });
 
+  /* ---------- Galeria: a capa do projeto abre as telas dele ----------
+     As telas ficam no próprio card (<ol class="card__shots">, links
+     para as imagens), então o conteúdo existe mesmo sem JavaScript. */
+  const gallery = $('.gallery');
+  if (gallery && gallery.showModal) {
+    const img = $('.gallery__stage img', gallery);
+    const caption = $('figcaption', gallery);
+    const count = $('.gallery__count', gallery);
+    const thumbs = $('.gallery__thumbs', gallery);
+    const prev = $('.gallery__nav--prev', gallery);
+    const next = $('.gallery__nav--next', gallery);
+    let shots = [];
+    let index = 0;
+    let opener = null;
+
+    const show = (i) => {
+      index = Math.max(0, Math.min(shots.length - 1, i));
+      const { src, text } = shots[index];
+      img.classList.add('is-loading');
+      img.onload = () => img.classList.remove('is-loading');
+      img.src = src;
+      img.alt = text;
+      caption.textContent = text;
+      count.textContent = `${index + 1} / ${shots.length}`;
+      prev.disabled = index === 0;
+      next.disabled = index === shots.length - 1;
+      $$('button', thumbs).forEach((b, k) => b.setAttribute('aria-current', k === index));
+      if (shots[index + 1]) new Image().src = shots[index + 1].src; // adianta a próxima
+    };
+
+    $$('[data-gallery]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.card');
+        shots = $$('.card__shots a', card).map((a) => ({ src: a.getAttribute('href'), text: a.textContent }));
+        if (!shots.length) return;
+        opener = btn;
+        $('.gallery__title', gallery).textContent = $('h3', card).textContent;
+        thumbs.innerHTML = '';
+        shots.forEach((s, k) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Tela ${k + 1}: ${s.text}`);
+          b.innerHTML = `<img src="${s.src}" alt="" loading="lazy" />`;
+          b.addEventListener('click', () => show(k));
+          thumbs.appendChild(b);
+        });
+        show(0);
+        window.lenis?.stop();
+        gallery.showModal();
+      });
+    });
+
+    prev.addEventListener('click', () => show(index - 1));
+    next.addEventListener('click', () => show(index + 1));
+    $('.gallery__close', gallery).addEventListener('click', () => gallery.close());
+    gallery.addEventListener('close', () => {
+      window.lenis?.start();
+      opener?.focus({ preventScroll: true });
+    });
+    // clique no fundo escuro (fora da imagem e dos controles) fecha
+    gallery.addEventListener('click', (e) => {
+      if (e.target === gallery || e.target.classList.contains('gallery__stage')) gallery.close();
+    });
+    gallery.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    // deslizar o dedo troca de tela no celular
+    let startX = null;
+    img.addEventListener('pointerdown', (e) => (startX = e.clientX));
+    img.addEventListener('pointerup', (e) => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
+    });
+  }
+
   // [data-scrub-words] → cada palavra em um <span> que acende com a rolagem
   $$('[data-scrub-words]').forEach((el) => {
     const words = el.textContent.trim().split(/\s+/);
@@ -179,7 +257,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!window.gsap || !window.ScrollTrigger || reduce) {
     root.classList.remove('motion');
-    $$('[data-count]').forEach((el) => (el.textContent = el.dataset.count));
+    $$('[data-count]').forEach((el) => (el.textContent = el.dataset.count + (el.dataset.suffix || '')));
     return;
   }
 
@@ -193,13 +271,6 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     window.lenis = lenis; // útil para depurar no console
-  }
-
-  // Splash (splash.js): a abertura só começa quando ela sai
-  const splashDone = window.splashDone || Promise.resolve();
-  if (lenis && root.classList.contains('splash-on')) {
-    lenis.stop();
-    splashDone.then(() => lenis.start());
   }
 
   $$('a[href^="#"]').forEach((a) => {
@@ -234,7 +305,7 @@
   function countUp(el) {
     const end = +el.dataset.count;
     const obj = { v: 0 };
-    gsap.to(obj, { v: end, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(obj.v)) });
+    gsap.to(obj, { v: end, duration: 1.6, ease: 'power3.out', onUpdate: () => (el.textContent = Math.round(obj.v) + (el.dataset.suffix || '')) });
   }
 
   /* ---------- Inicia depois das fontes (medidas dependem delas) ---------- */
@@ -271,7 +342,7 @@
     ScrollTrigger.addEventListener('refreshInit', setOrigin);
 
     gsap.set('.shard', { scale: 0, rotate: -90 });
-    splashDone.then(() => gsap.to('.shard', { scale: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.5 }));
+    gsap.to('.shard', { scale: 1, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.1, delay: 0.5 });
 
     // expo.in "normalizado": vale exatamente 0 no início. O expo.in do GSAP salta para ~0.001
     // logo após 0, e como o pin começa em -0.001 o título carregava com escala 1.07 em vez de 1.
@@ -423,7 +494,7 @@
 
     /* ===== Títulos em tiles ===== */
     $$('[data-tiles]').forEach((el) => {
-      if (el.dataset.tiles === 'load') { splashDone.then(() => playTiles(el, 0.2)); return; }
+      if (el.dataset.tiles === 'load') { playTiles(el, 0.2); return; }
       ScrollTrigger.create({ trigger: el, start: 'top 82%', once: true, onEnter: () => playTiles(el) });
     });
 

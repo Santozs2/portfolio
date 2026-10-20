@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0b3b32" />
   <meta property="og:title" content="Luis Nogueira — Desenvolvedor Web" />
   <meta property="og:description" content="Construindo meu próprio universo, uma linha de código por vez. React, TypeScript e Django." />
-  <meta property="og:image" content="assets/projects/amor-cacau.webp" />
+  <meta property="og:image" content="assets/projects/educmatch/capa.webp" />
   <link rel="icon" href="assets/projects/mascote_nogueira-removebg-preview.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,34 +17,15 @@
   <!-- Ativa os estados iniciais da animação antes do primeiro paint
        (main.js desfaz isso se o GSAP não carregar). -->
   <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion')</script>
-  <!-- Splash do castor: só na 1ª visita e sem "reduzir movimento". A trava de 12 s
-       garante que ninguém fica preso se splash.js não carregar. -->
-  <script>
-    (function () {
-      var d = document.documentElement, seen = false;
-      try { seen = !!localStorage.getItem('nogueira:splash'); } catch (e) {}
-      if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      d.classList.add('splash-on');
-      // trava de segurança: só age se splash.js não tiver carregado
-      setTimeout(function () { if (!window.splashDone) d.classList.remove('splash-on'); }, 12000);
-    })();
-  </script>
   <link rel="stylesheet" href="styles.css" />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="castor3d.js" defer></script>
-  <script src="splash.js" defer></script>
   <script src="main.js" defer></script>
 </head>
 <body>
-  <!-- Splash: o vídeo (assets/splash.mp4) só é baixado quando ela aparece -->
-  <div class="splash" aria-label="Abertura">
-    <video data-src="assets/splash.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
-    <button class="splash__skip" type="button">Pular <span aria-hidden="true">→</span></button>
-  </div>
-
   <div class="progress" aria-hidden="true"><span></span></div>
 
   <header class="nav">
@@ -77,9 +58,10 @@
         <p class="hero__kicker" data-hero-fade>Luis Antonio Nogueira · Desenvolvedor Web</p>
 
         <h1 class="tiles hero__title" data-tiles="load" aria-label="Construindo meu próprio universo, uma linha de código por vez.">
-          <span class="row">Construindo</span>
-          <span class="row">meu próprio universo,</span>
-          <span class="row">uma linha de código por vez.</span>
+          <span class="row">Construindo meu</span>
+          <span class="row">próprio universo,</span>
+          <span class="row row--accent">uma linha de código</span>
+          <span class="row row--accent">por vez.</span>
         </h1>
 
         <div class="hero__cta" data-hero-fade>
@@ -120,8 +102,8 @@
 
         <div class="about__grid">
           <ul class="stats">
-            <li class="stat" data-reveal><b data-count="4">0</b><span>projetos publicados</span></li>
-            <li class="stat" data-reveal><b data-count="9">0</b><span>fases de evolução</span></li>
+            <li class="stat" data-reveal><b data-count="200" data-suffix="+">0</b><span>testes automatizados</span></li>
+            <li class="stat" data-reveal><b data-count="12">0</b><span>fases de evolução</span></li>
             <li class="stat" data-reveal><b data-count="17">0</b><span>anos de idade</span></li>
           </ul>
 
@@ -156,78 +138,82 @@
             </h2>
           </div>
           <div class="work__counter" aria-hidden="true">
-            <span class="work__num"><b data-current>01</b> / 04</span>
+            <span class="work__num"><b data-current>01</b> / 03</span>
             <span class="work__bar"><i></i></span>
           </div>
         </div>
 
         <div class="work__track">
 
-          <article class="card card--choco">
-            <figure class="card__media">
-              <div class="card__bar"><i></i><i></i><i></i><span>amor-cacau.onrender.com</span></div>
-              <img src="assets/projects/amor-cacau.webp" alt="Página inicial do e-commerce Amor e Cacau" width="1440" height="900" />
-            </figure>
+          <article class="card card--orange">
+            <button class="card__media" type="button" data-gallery aria-label="Ver as 5 telas do EducMatch">
+              <img src="assets/projects/educmatch/capa.webp" alt="Logo do EducMatch" width="1440" height="1000" />
+              <span class="card__more"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Ver 5 telas</span>
+            </button>
+            <ol class="card__shots" hidden>
+                <li><a href="assets/projects/educmatch/1.webp">Início do quiz: sem cadastro, 10 perguntas</a></li>
+                <li><a href="assets/projects/educmatch/2.webp">Uma pergunta por tela, com barra de progresso</a></li>
+                <li><a href="assets/projects/educmatch/3.webp">Resultado: afinidade calculada por similaridade de cosseno</a></li>
+                <li><a href="assets/projects/educmatch/4.webp">Detalhe do curso com a afinidade do aluno</a></li>
+                <li><a href="assets/projects/educmatch/5.webp">Painel da coordenação: testes, demanda por área e atividade</a></li>
+            </ol>
             <div class="card__info">
-              <div class="card__meta"><b>01</b><span>Front-end / Back-end · 2026</span></div>
-              <h3>Amor e Cacau</h3>
-              <p class="card__sub">E-commerce de chocolates artesanais</p>
-              <p>Catálogo, carrinho, frete por CEP via API dos Correios e pagamento PIX com QR Code confirmado por webhook do Mercado Pago. Painel admin com dashboard de vendas e exportação CSV.</p>
-              <ul class="chips"><li>React</li><li>TypeScript</li><li>Tailwind</li><li>Supabase</li><li>Vite</li></ul>
+              <div class="card__meta"><b>01</b><span>Full-Stack · 2026</span></div>
+              <h3>EducMatch</h3>
+              <p class="card__sub">Orientação profissional para o ensino técnico</p>
+              <p>Quiz que recomenda cursos técnicos por similaridade de cosseno. Painel da coordenação com k-anonimato, sem expor nenhum aluno. No ar no Azure, com mais de 200 testes.</p>
+              <ul class="chips"><li>Django</li><li>Python</li><li>MySQL</li><li>Azure</li></ul>
               <div class="card__links">
-                <a class="btn btn--dark btn--sm" href="https://amor-cacau.onrender.com/" target="_blank" rel="noopener">Ver online ↗</a>
-                <a class="btn btn--line btn--sm" href="https://github.com/Santozs2/amor-cacau" target="_blank" rel="noopener">GitHub</a>
+                <a class="btn btn--dark btn--sm" href="https://educmatch-7249.azurewebsites.net/" target="_blank" rel="noopener">Ver online ↗</a>
+                <a class="btn btn--line btn--sm" href="https://github.com/Santozs2/educmatch" target="_blank" rel="noopener">GitHub</a>
               </div>
             </div>
           </article>
 
           <article class="card card--sky">
-            <figure class="card__media">
-              <div class="card__bar"><i></i><i></i><i></i><span>icefrost · cardápio</span></div>
-              <img src="assets/projects/icefrost-cardapio.webp" alt="Cardápio do sistema ICE FROST com fotos dos sorvetes" width="1440" height="900" loading="lazy" />
-            </figure>
+            <button class="card__media" type="button" data-gallery aria-label="Ver as 4 telas do Digimax">
+              <img src="assets/projects/digimax/capa.webp" alt="Logo do Digimax" width="1440" height="1000" loading="lazy" />
+              <span class="card__more"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Ver 4 telas</span>
+            </button>
+            <ol class="card__shots" hidden>
+                <li><a href="assets/projects/digimax/1.webp">Menu no estilo WhatsApp com as opções do atendimento</a></li>
+                <li><a href="assets/projects/digimax/2.webp">Painel da loja: fila de impressão, dos mais antigos para os mais novos</a></li>
+                <li><a href="assets/projects/digimax/3.webp">Pedido marcado como pronto: sai da fila e vai para retirada</a></li>
+                <li><a href="assets/projects/digimax/4.webp">O cliente recebe o aviso de retirada no WhatsApp</a></li>
+            </ol>
             <div class="card__info">
-              <div class="card__meta"><b>02</b><span>Back-end / Front-end · 2026</span></div>
-              <h3>ICE FROST</h3>
-              <p class="card__sub">Sistema de gestão para sorveteria</p>
-              <p>Gestão de produtos, fornecedores e estoque para uma sorveteria artesanal, com CRUD completo no Django ORM e interface em Django Templates. Avaliação formativa no SENAI-SP.</p>
-              <ul class="chips"><li>Django</li><li>Python</li><li>SQLite</li><li>HTML</li><li>CSS</li></ul>
+              <div class="card__meta"><b>02</b><span>IA · Back-end · 2026</span></div>
+              <h3>Digimax</h3>
+              <p class="card__sub">Atendimento de WhatsApp com IA para uma gráfica</p>
+              <p>Agente com Claude e tool use que orça impressões, conta as páginas do PDF e abre o pedido na fila da loja. A IA nunca define preço: todo valor é recalculado no servidor.</p>
+              <ul class="chips"><li>Node.js</li><li>TypeScript</li><li>Claude API</li><li>Express</li><li>Zod</li></ul>
               <div class="card__links">
-                <a class="btn btn--dark btn--sm" href="https://github.com/Santozs2/icefrost" target="_blank" rel="noopener">GitHub ↗</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card card--orange">
-            <figure class="card__media">
-              <div class="card__bar"><i></i><i></i><i></i><span>oportuna-conecta · dashboard</span></div>
-              <img src="assets/projects/oportuna-conecta.webp" alt="Dashboard do Oportuna Conecta com matches recentes entre alunos e vagas" width="1843" height="988" loading="lazy" />
-            </figure>
-            <div class="card__info">
-              <div class="card__meta"><b>03</b><span>Full-Stack · 2026</span></div>
-              <h3>Oportuna Conecta</h3>
-              <p class="card__sub">Matching entre estudantes e vagas</p>
-              <p>Conecta estudantes do ensino técnico a vagas de emprego e estágio. React + TypeScript no front; Django REST com autenticação JWT, candidaturas e perfis no back — totalmente desacoplados via API.</p>
-              <ul class="chips"><li>React</li><li>TypeScript</li><li>Django REST</li><li>JWT</li></ul>
-              <div class="card__links">
-                <a class="btn btn--dark btn--sm" href="https://github.com/Santozs2/oportuna-conecta" target="_blank" rel="noopener">GitHub ↗</a>
+                <a class="btn btn--dark btn--sm" href="https://github.com/Santozs2/digimax-chatbot" target="_blank" rel="noopener">GitHub ↗</a>
               </div>
             </div>
           </article>
 
           <article class="card card--forest">
-            <figure class="card__media">
-              <div class="card__bar"><i></i><i></i><i></i><span>cadastro-maquinas · dashboard</span></div>
-              <img src="assets/projects/cadastro-maquinas.webp" alt="Dashboard de máquinas do sistema Cadastro de Máquinas" width="1440" height="900" loading="lazy" />
-            </figure>
+            <button class="card__media" type="button" data-gallery aria-label="Ver as 5 telas do ReturnOps">
+              <img src="assets/projects/returnops/capa.webp" alt="Logo do ReturnOps" width="1440" height="1000" loading="lazy" />
+              <span class="card__more"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Ver 5 telas</span>
+            </button>
+            <ol class="card__shots" hidden>
+                <li><a href="assets/projects/returnops/1.webp">Início: valor recuperado em disputas e prioridades do dia</a></li>
+                <li><a href="assets/projects/returnops/2.webp">Receber pacote: leitura da etiqueta pela câmera ou leitor USB</a></li>
+                <li><a href="assets/projects/returnops/3.webp">Devoluções por etapa, com filtro por plataforma</a></li>
+                <li><a href="assets/projects/returnops/4.webp">Resultados: devoluções, valor recuperado e disputas ganhas</a></li>
+                <li><a href="assets/projects/returnops/5.webp">Passo a passo para abrir a disputa antes do prazo</a></li>
+            </ol>
             <div class="card__info">
-              <div class="card__meta"><b>04</b><span>Back-end / Front-end · 2026</span></div>
-              <h3>Cadastro de Máquinas</h3>
-              <p class="card__sub">Gestão de equipamentos industriais</p>
-              <p>CRUD de máquinas e colaboradores com setor, patrimônio e responsável, validado com Django Forms. Feito no simulado da SAEP — prazo fechado, sem consulta.</p>
-              <ul class="chips"><li>Django</li><li>Python</li><li>SQLite</li><li>HTML</li><li>CSS</li></ul>
+              <div class="card__meta"><b>03</b><span>Produto · Front-end · 2026</span></div>
+              <h3>ReturnOps</h3>
+              <p class="card__sub">Controle de devoluções de marketplaces</p>
+              <p>Nasceu do pedido em áudio de uma loja de móveis: bipa o pacote pela câmera ou leitor USB, registra fotos da avaria e abre a disputa no prazo de cada marketplace. O painel mostra o dinheiro recuperado.</p>
+              <ul class="chips"><li>JavaScript</li><li>IndexedDB</li><li>Código de barras</li></ul>
               <div class="card__links">
-                <a class="btn btn--lime btn--sm" href="https://github.com/Santozs2/cadastro-maquinas" target="_blank" rel="noopener">GitHub ↗</a>
+                <a class="btn btn--lime btn--sm" href="https://return-ops.vercel.app/" target="_blank" rel="noopener">Ver online ↗</a>
+                <a class="btn btn--line btn--sm" href="https://github.com/Santozs2/ReturnOps" target="_blank" rel="noopener">GitHub</a>
               </div>
             </div>
           </article>
@@ -255,16 +241,16 @@
           <div class="iso__plane">
             <div class="phase"><b>01</b><h3>HTML</h3><p>Semântica e acessibilidade</p><time>2025</time></div>
             <div class="phase"><b>02</b><h3>CSS</h3><p>Layout e interação</p><time>2025</time></div>
-            <div class="phase"><b>03</b><h3>Git/GitHub</h3><p>Controle de versão e colaboração</p><time>2026</time></div>
-            <div class="phase"><b>04</b><h3>Banco de Dados</h3><p>Modelagem e indexação</p><time>2025</time></div>
+            <div class="phase"><b>03</b><h3>Banco de Dados</h3><p>Modelagem e indexação</p><time>2025</time></div>
+            <div class="phase"><b>04</b><h3>Git/GitHub</h3><p>Controle de versão e colaboração</p><time>2026</time></div>
             <div class="phase"><b>05</b><h3>APIs</h3><p>REST, JWT e integrações</p><time>2026</time></div>
-            <div class="phase phase--live"><b>06</b><h3>React</h3><p>Componentes e estado</p><time>Estudando</time></div>
-            <div class="phase phase--live"><b>07</b><h3>JavaScript</h3><p>Assíncrono e ES6+</p><time>Estudando</time></div>
-            <div class="phase phase--live"><b>08</b><h3>Django</h3><p>MVC, ORM e templates</p><time>Estudando</time></div>
+            <div class="phase phase--live"><b>06</b><h3>React</h3><p>Componentes e estado</p><time>Em uso</time></div>
+            <div class="phase phase--live"><b>07</b><h3>JavaScript</h3><p>Assíncrono e ES6+</p><time>Em uso</time></div>
+            <div class="phase phase--live"><b>08</b><h3>Django</h3><p>MVC, ORM e templates</p><time>Em uso</time></div>
             <div class="phase phase--live"><b>09</b><h3>Docker</h3><p>Ambientes reprodutíveis</p><time>Estudando</time></div>
             <div class="phase phase--live"><b>10</b><h3>Eng. de Software</h3><p>Padrões e arquitetura</p><time>Estudando</time></div>
             <div class="phase phase--live"><b>11</b><h3>Eng. de Dados</h3><p>Modelagem e processamento</p><time>Estudando</time></div>
-            <div class="phase phase--live"><b>12</b><h3>MCP(IA)</h3><p>Modelagem e processamento</p><time>Estudando</time></div>
+            <div class="phase phase--live"><b>12</b><h3>IA &amp; MCP</h3><p>Agentes, tool use e LLMs</p><time>Estudando</time></div>
           </div>
         </div>
       </div>
@@ -327,5 +313,21 @@
   </main>
 
   <div class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Galeria: abre ao clicar na capa de um projeto (main.js) -->
+  <dialog class="gallery" aria-labelledby="gallery-title">
+    <div class="gallery__top">
+      <h2 class="gallery__title" id="gallery-title"></h2>
+      <span class="gallery__count" aria-live="polite"></span>
+      <button class="gallery__close" type="button" aria-label="Fechar galeria">✕</button>
+    </div>
+    <figure class="gallery__stage">
+      <img alt="" draggable="false" />
+      <figcaption></figcaption>
+    </figure>
+    <button class="gallery__nav gallery__nav--prev" type="button" aria-label="Tela anterior">←</button>
+    <button class="gallery__nav gallery__nav--next" type="button" aria-label="Próxima tela">→</button>
+    <div class="gallery__thumbs"></div>
+  </dialog>
 </body>
 </html>
